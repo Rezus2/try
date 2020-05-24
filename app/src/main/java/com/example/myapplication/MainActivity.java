@@ -24,6 +24,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -33,12 +34,9 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    DBMatches mDBConnector; // нет инициализации, я добавил в onCreate
-    //Context mContext; // зачем вам переменная контекста? Вы даже не инициализируете её, поэтому
-    // поэтому получали ошибку nullPointerException
+    DBMatches mDBConnector;
     ListView mListView;
-    myListAdapter myAdapter; // нет инициализации адаптера откуда программа возьмет информацию?
-    // так же не инициализирован mListView который будет показывать список
+    myListAdapter myAdapter;
 
     int ADD_ACTIVITY = 0;
     int UPDATE_ACTIVITY = 1;
@@ -51,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mDBConnector = new DBMatches(this);
+        myAdapter=new myListAdapter(this, mDBConnector.selectAll());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -88,9 +87,7 @@ public class MainActivity extends AppCompatActivity {
 //                Intent i = new Intent(mContext, AddActivity.class);
                 Intent i = new Intent(this, AddActivity.class); // весь контекст содержится уже внутри данной активности
                 startActivityForResult(i, ADD_ACTIVITY);
-//                updateList(); // активность не запускается в тот же момент как вызывается. Она помещается в стек задач
-                // и пока текущая задача не будет закончена - новая не запуститься. Только если в другомм потоке.
-                // у вас же поток UI и он один. Поэтому обновления списка надо производить когда есть результат
+               updateList();
                 return true;
             case R.id.deleteAll:
                 mDBConnector.deleteAll();
@@ -133,21 +130,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateList() {
-        /**
-         * текущая ошибка
-         */
-        myAdapter.setArrayMyData(mDBConnector.selectAll()); // нет адаптера - нельязя обновить
+        myAdapter.setArrayMyData(mDBConnector.selectAll());
         myAdapter.notifyDataSetChanged();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (resultCode == Activity.RESULT_OK && requestCode == ADD_ACTIVITY) { // обязательно нужно проверять кто вернул ответ
+        if (resultCode == Activity.RESULT_OK && requestCode == ADD_ACTIVITY) {
             if (data != null && data.hasExtra("Matches")) {
-                Matches md = (Matches) data.getExtras().getSerializable("Matches"); // обязательно нужно проверить есть ли
-                // вообще такая посылка
-                if (md != null) { // и обязательно надо проверить, что посылка корректно развернулась
+                Matches md = (Matches) data.getExtras().getSerializable("Matches");
+                if (md != null) {
                     if (requestCode == UPDATE_ACTIVITY)
                         mDBConnector.update(md);
                     else
