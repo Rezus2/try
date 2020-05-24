@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Students</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="middlename">Отчество</string>
+    <string name="group">Номер группы</string>
+    <string name="save">Сохранить</string>
+    <string name="edit">Редактировать</string>
+    <string name="delete">Удалить</string>
+    <string name="cancel">Отмена</string>
+    <string name="icon">Icon</string>
+    <string name="deleteAll">Удалить все</string>
+    <string name="groups">Показать список групп</string>
+    <string name="exit">Выход</string>
+    <string name="add">Добавить студента</string>
+    <string name="menu_students">Список студентов</string>
+    <string name="menu_groups">Список групп</string>
+</resources>
