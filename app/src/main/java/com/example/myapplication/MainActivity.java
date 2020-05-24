@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
             if (data != null && data.hasExtra("Matches")) {
                 Matches md = (Matches) data.getExtras().getSerializable("Matches"); // обязательно нужно проверить есть ли
                 // вообще такая посылка
-                if (md != null) { // и обязательно надо проверит, что посылка корректно развернулась
+                if (md != null) { // и обязательно надо проверить, что посылка корректно развернулась
                     if (requestCode == UPDATE_ACTIVITY)
                         mDBConnector.update(md);
                     else
