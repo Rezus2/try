@@ -33,10 +33,12 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    DBMatches mDBConnector;
-    Context mContext;
+    DBMatches mDBConnector; // нет инициализации, я добавил в onCreate
+    //Context mContext; // зачем вам переменная контекста? Вы даже не инициализируете её, поэтому
+    // поэтому получали ошибку nullPointerException
     ListView mListView;
-    myListAdapter myAdapter;
+    myListAdapter myAdapter; // нет инициализации адаптера откуда программа возьмет информацию?
+    // так же не инициализирован mListView который будет показывать список
 
     int ADD_ACTIVITY = 0;
     int UPDATE_ACTIVITY = 1;
@@ -47,8 +49,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mDBConnector = new DBMatches(this);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -79,9 +85,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add:
-                Intent i = new Intent(mContext, AddActivity.class);
+//                Intent i = new Intent(mContext, AddActivity.class);
+                Intent i = new Intent(this, AddActivity.class); // весь контекст содержится уже внутри данной активности
                 startActivityForResult(i, ADD_ACTIVITY);
-                updateList();
+//                updateList(); // активность не запускается в тот же момент как вызывается. Она помещается в стек задач
+                // и пока текущая задача не будет закончена - новая не запуститься. Только если в другомм потоке.
+                // у вас же поток UI и он один. Поэтому обновления списка надо производить когда есть результат
                 return true;
             case R.id.deleteAll:
                 mDBConnector.deleteAll();
@@ -107,11 +116,12 @@ public class MainActivity extends AppCompatActivity {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case R.id.edit:
-                Intent i = new Intent(mContext, AddActivity.class);
+//                Intent i = new Intent(mContext, AddActivity.class);
+                Intent i = new Intent(this, AddActivity.class); // соответсвенно
                 Matches md = mDBConnector.select(info.id);
                 i.putExtra("Matches", md);
                 startActivityForResult(i, UPDATE_ACTIVITY);
-                updateList();
+//                updateList(); та же ситуация
                 return true;
             case R.id.delete:
                 mDBConnector.delete(info.id);
@@ -123,20 +133,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateList() {
-        myAdapter.setArrayMyData(mDBConnector.selectAll());
+        /**
+         * текущая ошибка
+         */
+        myAdapter.setArrayMyData(mDBConnector.selectAll()); // нет адаптера - нельязя обновить
         myAdapter.notifyDataSetChanged();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (resultCode == Activity.RESULT_OK) {
-            Matches md = (Matches) data.getExtras().getSerializable("Matches");
-            if (requestCode == UPDATE_ACTIVITY)
-                mDBConnector.update(md);
-            else
-                mDBConnector.insert(md.getName(), md.getSurname(), md.getMiddlename(), md.getGroup());
-            updateList();
+        if (resultCode == Activity.RESULT_OK && requestCode == ADD_ACTIVITY) { // обязательно нужно проверять кто вернул ответ
+            if (data != null && data.hasExtra("Matches")) {
+                Matches md = (Matches) data.getExtras().getSerializable("Matches"); // обязательно нужно проверить есть ли
+                // вообще такая посылка
+                if (md != null) { // и обязательно надо проверит, что посылка корректно развернулась
+                    if (requestCode == UPDATE_ACTIVITY)
+                        mDBConnector.update(md);
+                    else
+                        mDBConnector.insert(md.getName(), md.getSurname(), md.getMiddlename(), md.getGroup());
+                    updateList();
+                }
+            }
         }
     }
 
