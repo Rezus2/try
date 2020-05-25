@@ -19,6 +19,7 @@
     <string name="groups">Показать список групп</string>
     <string name="exit">Выход</string>
     <string name="add">Добавить студента</string>
+    <string name="addgr">Добавить группу</string>
     <string name="menu_students">Список студентов</string>
     <string name="menu_groups">Список групп</string>
 </resources>
