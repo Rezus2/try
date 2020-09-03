@@ -4,6 +4,7 @@
     android:layout_height="fill_parent"
     android:gravity="center"
     android:layout_gravity="center"
+    android:background="@drawable/imgon"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -35,7 +36,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_above="@id/buttons"
-        android:layout_marginBottom="-1dp"
+        android:layout_marginBottom="1dp"
         android:fillViewport="true">
 
         <LinearLayout
@@ -55,41 +56,36 @@
 
                     <TextView
                         android:id="@+id/textView"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:textSize="20sp"
-                        android:textColor="@android:color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="56dp"
                         android:gravity="center"
-                        android:text="Введите данные студента:" />
-
-                    <TextView
-                        android:layout_width="425dp"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="5dp"
-                        android:paddingTop="5dp"
-                        android:text="@string/name"
-                        android:textStyle="bold" />
+                        android:paddingLeft="75sp"
+                        android:text="Введите данные студента:"
+                        android:textColor="@android:color/white"
+                        android:textSize="22sp"
+                        android:textStyle="italic" />
 
                     <EditText
                         android:id="@+id/name"
-                        android:layout_width="400dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="210dp"
+                        android:layout_height="45dp"
+                        android:gravity="center"
+                        android:layout_marginLeft="104sp"
+                        android:background="@drawable/field"
+                        android:hint="Имя"
                         android:inputType="text" />
-
-                    <requestFocus />
-
-                    <TextView
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="5dp"
-                        android:text="@string/surname"
-                        android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/surname"
-                        android:layout_width="400dp"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"></EditText>
+                        android:layout_width="210dp"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="20sp"
+                        android:textColor="@color/colorAccent"
+                        android:gravity="center"
+                        android:layout_marginLeft="104sp"
+                        android:background="@drawable/field"
+                        android:hint="Фамилия"
+                        android:inputType="text" />
 
                 </LinearLayout>
 
@@ -111,25 +107,16 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="123dp"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="5dp"
-                        android:text="@string/middlename"
-                        android:textStyle="bold" />
-
                     <EditText
                         android:id="@+id/middlename"
-                        android:layout_width="400dp"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
-
-                    <TextView
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="5dp"
-                        android:text="@string/group"
-                        android:textStyle="bold" />
+                        android:layout_width="210dp"
+                        android:layout_height="45dp"
+                        android:layout_marginTop="20sp"
+                        android:gravity="center"
+                        android:layout_marginLeft="104sp"
+                        android:background="@drawable/field"
+                        android:hint="Отчество"
+                        android:inputType="text" /> />
 
                 </LinearLayout>
 
@@ -143,9 +130,14 @@
 
             <EditText
                 android:id="@+id/group"
-                android:layout_width="122dp"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:layout_width="210dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="20sp"
+                android:gravity="center"
+                android:layout_marginLeft="104sp"
+                android:background="@drawable/field"
+                android:hint="№ группы"
+                android:inputType="text" /> />
 
         </LinearLayout>
     </ScrollView>
